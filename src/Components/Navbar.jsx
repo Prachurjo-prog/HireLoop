@@ -4,9 +4,18 @@ import logo from "@/assets/logo.png";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { authClient, useSession } from "@/lib/auth-client";
+import { Button } from "@heroui/react";
 
-export default function Navbar() {
+export default function  Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  console.log(user);
+
+   const handleSignOut = async() =>{
+    await authClient.signOut();
+  }
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-gray-200 bg-[#000000]">
@@ -52,8 +61,21 @@ export default function Navbar() {
             <div className="h-6 w-px bg-gray-300" />
 
             {/* Auth Section */}
-            <div className="flex items-center gap-4">
-              <Link
+             {
+                user ? (
+                   <Link href={"/"} onClick={() => setIsOpen(false)}>
+                    <div className="flex gap-3 items-center">
+                      <h2 className="font-bold">Hi, {user.name}!</h2>
+                  <Button onClick={handleSignOut} className="bg-white text-black w-full">
+                    Log out
+                  </Button>
+                    </div>
+                    
+                </Link>
+                ) : (
+                   <div className="flex items-center gap-4">
+             
+             <Link
                 href="/signin"
                 className="text-sm font-medium text-purple-500 hover:text-purple-600 transition-colors"
               >
@@ -66,6 +88,9 @@ export default function Navbar() {
                 Get Started
               </Link>
             </div>
+                )
+              }
+           
           </div>
 
           {/* Mobile Menu Button */}
