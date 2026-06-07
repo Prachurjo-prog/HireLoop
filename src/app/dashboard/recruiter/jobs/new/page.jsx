@@ -16,7 +16,7 @@ import {
     toast
 } from "@heroui/react";
 import { Briefcase, Globe } from "@gravity-ui/icons";
-// import { createJob } from "@/lib/actions/jobs";
+import { createJob } from "@/lib/actions/jobs";
 import { redirect } from "next/navigation";
 
 export default function PostJobPage() {
@@ -72,7 +72,7 @@ export default function PostJobPage() {
             toast.success("Job posted successfully!");
             e.target.reset();
             setIsRemote(false);
-            redirect("/dashboard/recruiter/jobs");
+            redirect("/dashboard/recruiter");
         }
     };
 
